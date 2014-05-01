@@ -3,7 +3,7 @@
 Plugin Name: Decision Tree
 Plugin URI: http://sidecar.tv/decision_tree
 Description: A Decision Tree Builder
-Version: 1.0
+Version: 1.0.1
 Author: SideCar Apps
 Author URI: http://sidecar.tv/
 License: Commerical
@@ -38,7 +38,7 @@ class DecisionTree {
                         ),
                     'public' => false,
                     'show_ui' => true,
-                    'show_in_menu' =>'DecisionTree/decision_tree_dashboard.php',
+                    'show_in_menu' => self::get_plugin_path().'/decision_tree_dashboard.php',
                     'query_var'=>false,
                     'has_archive' => false,
                     'supports' => array( 'title' ),
@@ -307,19 +307,19 @@ class DecisionTree {
             $menu_icon = "none";
         }
         add_menu_page('Decision Trees', 'Decision Trees', 'edit_posts', 
-                'DecisionTree/decision_tree_dashboard.php', '', $menu_icon, 25.123);
+                self::get_plugin_path().'/decision_tree_dashboard.php', '', $menu_icon, 25.123);
         
         //add the dashboard page
-        add_submenu_page('DecisionTree/decision_tree_dashboard.php', 'Dashboard', 
-                'Dashboard', 'edit_posts', 'DecisionTree/decision_tree_dashboard.php' );
+        add_submenu_page(self::get_plugin_path().'/decision_tree_dashboard.php', 'Dashboard', 
+                'Dashboard', 'edit_posts', self::get_plugin_path().'/decision_tree_dashboard.php' );
         
         //add the add new page
-        add_submenu_page('DecisionTree/decision_tree_dashboard.php', 'Add New', 
+        add_submenu_page(self::get_plugin_path().'/decision_tree_dashboard.php', 'Add New', 
                 'Add New', 'edit_posts', 'post-new.php?post_type=decision_tree' );
         
         //add the instructions page
-        add_submenu_page('DecisionTree/decision_tree_dashboard.php', 'Instructions', 
-                'Instructions', 'edit_posts', 'DecisionTree/decision_tree_instructions.php' );      
+        add_submenu_page(self::get_plugin_path().'/decision_tree_dashboard.php', 'Instructions', 
+                'Instructions', 'edit_posts', self::get_plugin_path().'/decision_tree_instructions.php' );      
         }
     
    /**
@@ -447,6 +447,10 @@ class DecisionTree {
                 $post_count = wp_count_posts('decision_tree');
                 sidecar_track::track_event('list_tree', 'count', 'published', $post_count->publish);
         }
+     }
+     
+     static function get_plugin_path(){
+         return dirname(plugin_basename(__FILE__));
      }
 }
 add_action('admin_menu',   array('DecisionTree', 'register_menu_items'), 8);
