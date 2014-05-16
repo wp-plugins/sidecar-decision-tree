@@ -2,7 +2,7 @@
          sidecar_track::track_screen('dt_dashboard');
 ?>
 
-    <h2>Decision Tree 1.0</h2>
+    <h2>Decision Tree 1.0.2</h2>
     <br>
 <div class="dt_simple_float">
 	<div class="dt_dashboard_box">
@@ -63,7 +63,7 @@
 	        Need help? Visit the <a href="http://sidecar.tv/decision_tree/">Decision Tree</a> page for all the details.
 	        <p>
 	        <b>Privacy & Terms Of Service</b><br>
-	        This Plug-in is covered by our <a href="http://sidecar.tv/terms_of_service/">Terms Of Service</a> and <a href="http://sidecar.tv/terms_of_service/">Privacy Policy</a>.
+	        This Plug-in is covered by our <a href="http://sidecar.tv/about-privacy-tos/">Terms Of Service</a> and <a href="http://sidecar.tv/about-privacy-tos/">Privacy Policy</a>.
 		</div>
 	</div>
     
