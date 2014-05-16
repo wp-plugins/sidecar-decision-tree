@@ -4,23 +4,24 @@ Donate link: http://sidecar.tv/decision_tree/
 Tags: decision tree
 Requires at least: 3.0
 Tested up to: 3.9
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+The best and only decision tree builder for WordPress!
+
+== Description ==
 The Decision Tree plugin is the only plugin we know of where you can easily build 
 a decision tree allowing you to easily present your visitors yes/no type questions
 and walk them down your decision tree.
 
-== Description ==
-
-=== Easy to build ===
+= Easy to build ==
 
 The Decision Tree plugin is the only plugin we know of where you can easily build 
 a decision tree (DT).  Easily create your own trees with the easy to use DT editor. 
 You can quickly build up your questions and map them to the correct answers
 
-=== Easy to use ===
+= Easy to use =
 
 The Decision Tree plugin is the only plugin we know of where you can easily build a 
 decision tree (DT).  Easily create your own trees with the easy to use DT editor. 
@@ -39,18 +40,32 @@ in your page or your post. Simple as pie:
 
 == Frequently Asked Questions ==
 
-= What questions do you answer here? =
+= Can I add a link to click in an answer? =
 
-None yet, check back soon!
+Not now!  We're planning on adding this feature later.  For now, you can put HTML
+with an href in the answer "subtext" field as a work around.
+
+= Can I get statistics on which answers folks arrived at? =
+
+Like the question above, not now!  We're planning on adding this feature later. 
 
 == Screenshots ==
 
-1. Start by creating a DT dt.create.png
-1. Then use the editor to place the DT in your post or page dt.edit.png
-1. You visitor see an easy to use DT dt.sample.1.png
-1. And they'll know when they've reached their answer dt.sample.2.png
+1. Start by creating a DT 
+2. Then use the editor to place the DT in your post or page
+3. You visitor see an easy to use DT 
+4. And they'll know when they've reached their answer 
 
 == Changelog ==
+
+= 1.0.2 =
+* Fix link in dashboard to privacy policy and terms of service.  If you're wondering, it's here! http://sidecar.tv/about-privacy-tos/
+* WordPress.org: Add a few FAQs based on forum activity.
+* WordPress.org: Add banner and fix main top text to not overflow.
+* WordPress.org: Clean up readme and screenshots.   Remove awkward "other notes". 
+
+= 1.0.1 =
+* Fix links in admin to dashboard and instructions
 
 = 1.0 =
 * Initial release
@@ -59,6 +74,3 @@ None yet, check back soon!
 
 = NA =
 No upgrades yet!
-
-/ goes in backticks ?>`
-

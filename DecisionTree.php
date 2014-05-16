@@ -3,7 +3,7 @@
 Plugin Name: Decision Tree
 Plugin URI: http://sidecar.tv/decision_tree
 Description: A Decision Tree Builder
-Version: 1.0.1
+Version: 1.0.2
 Author: SideCar Apps
 Author URI: http://sidecar.tv/
 License: Commerical
