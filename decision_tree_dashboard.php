@@ -2,7 +2,7 @@
          sidecar_track::track_screen('dt_dashboard');
 ?>
 
-    <h2>Decision Tree 1.0.2</h2>
+    <h2>Decision Tree 1.0.3</h2>
     <br>
 <div class="dt_simple_float">
 	<div class="dt_dashboard_box">
