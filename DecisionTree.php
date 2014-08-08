@@ -3,7 +3,7 @@
 Plugin Name: Decision Tree
 Plugin URI: http://sidecar.tv/decision_tree
 Description: A Decision Tree Builder
-Version: 1.0.1
+Version: 1.0.3
 Author: SideCar Apps
 Author URI: http://sidecar.tv/
 License: Commerical
@@ -160,7 +160,7 @@ class DecisionTree {
         $dtree_blob = get_post_meta($atts['id'], 'dtree_blob', true);
         $dtree_post = get_post($atts['id']);
         $dt_id = $atts['id'];
-        $dt_title = $dtree_post->post_title;
+        $dt_title = addslashes($dtree_post->post_title);
         
         //output the JSON DT Blob and have JS on DOM ready turn it into an object
         //then on the client side call process on the first question

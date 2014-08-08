@@ -189,7 +189,9 @@ DTree.prototype.get_step_block = function(step_number, choices){
             <p class="description " >\
                 <label for="' + step_number + '_type">\
                         Question/Answer<br>\
-                    <select name="' + step_number + '_type" id="' + step_number + '_type" class="decision_tree_input">\
+                    <select name="' + step_number + '_type" id="' + step_number + '_type" \
+                       class="decision_tree_input decision_tree_input_type " \
+                       parent_id="decision_tree_step-' + step_number + '">\
                     <option value="question">Question</option><option value="answer">Answer</option></select>\
                 </label>\
             </p>\
@@ -323,17 +325,20 @@ DTree.prototype.populateDTFormFromDB = function(DTree_object_restored) {
     jQuery.each(DTree_object_restored.data, function(step_number, questionObj) {
         if (typeof step_number != "undefined" && typeof questionObj != "undefined" ){
             
-            // now do up the choices, if any
-            jQuery.each(questionObj.choices, function(id, choiceObj) {
-                //bump unique counter as we're populateing object to avoid colisions
-                objSelf.get_uniq_id();
+			// now do up the choices, if any, but for quesitons only.
+			if (questionObj.type == 'question'){
+				
+				jQuery.each(questionObj.choices, function(id, choiceObj) {
+					//bump unique counter as we're populateing object to avoid colisions
+					objSelf.get_uniq_id();
 
-                // add a choice and then fill it up
-                choice_number = objSelf.add_choice_field(step_number);
-                DTree_field_set.update_next_step_select();
-                jQuery('#' + choice_number + '_text').val(choiceObj.choice), 
-                jQuery('#' + choice_number + '_next').val(choiceObj.next);
-            });
+					// add a choice and then fill it up
+					choice_number = objSelf.add_choice_field(step_number);
+					DTree_field_set.update_next_step_select();
+					jQuery('#' + choice_number + '_text').val(choiceObj.choice), 
+					jQuery('#' + choice_number + '_next').val(choiceObj.next);
+				});
+			} 
         }        
     });
     
@@ -470,7 +475,6 @@ DTree.prototype.getFormValues = function(formClass) {
  * ensures a DT form is ready to be saved.  will disable save button if note ready
  * as well as show an error box
  * @param {type} presentError
- * @param {type} hideFieldError
  * @returns {Boolean}
  */
 DTree.prototype.validateForm = function(showErrors ) {
@@ -590,7 +594,7 @@ DTree.prototype.validateForm = function(showErrors ) {
             dialogClass: "dtree_entry_error_dialog" ,
             modal: true,
             title: "Oops!"
-	});
+		});
         jQuery(".decision_tree_textfield_error").fadeOut(400).fadeIn(400);    
     }
 
@@ -704,8 +708,11 @@ DTree.prototype.enableForm = function(foundErrors) {
 
     if (foundErrors){
         jQuery('#publishing-action input[type=submit]').addClass('formSubmitButtonError');
+        jQuery('#minor-publishing-actions input[type=submit]').addClass('formSubmitButtonError');
+		
     } else {
         jQuery('#publishing-action input[type=submit]').removeClass('formSubmitButtonError');
+        jQuery('#minor-publishing-actions input[type=submit]').removeClass('formSubmitButtonError');
     }
     
     return foundErrors;
@@ -737,6 +744,14 @@ DTree.prototype.previewTreeFromForm = function() {
 
 }
 
+DTree.prototype.check_step_type = function(parentID, type){
+    if(type == 'answer'){
+		jQuery('#' + parentID + ' .decision_tree_choice_area').hide();
+	} else {
+		jQuery('#' + parentID + ' .decision_tree_choice_area').show();
+	}
+    
+}
 /**
  * log something to JS console, prepend with timestamp 
  * @param {string} note to print with your log
@@ -793,6 +808,10 @@ jQuery(document).ready(function($) {
         DTree_field_set.add_step_text(event_obj);
         DTree_field_set.update_next_step_select();
         event_obj.preventDefault();
+    });
+    //listen for changing type of a step answer/questions
+    jQuery( document ).on("change", ".decision_tree_input_type", function(event_obj) {
+        DTree_field_set.check_step_type(jQuery(this).attr('parent_id'), jQuery(this).val());
     });   
     //listen for blurs on required fields
     jQuery( document ).on("blur", ".decision_tree_required", function() {
@@ -822,6 +841,12 @@ jQuery(document).ready(function($) {
         jQuery("#dtree_blob").val(JSON.stringify(DTree_object));
         return true;
     });
+    // listen for clicks on "save draft" of DT 
+    jQuery( document ).on("click", "#save-post", function(event_obj) {
+        DTree_object = DTree_field_set.getDTObjectFromForm();
+        jQuery("#dtree_blob").val(JSON.stringify(DTree_object));
+        return true;
+    });
     
     jQuery( document ).on("click", "#dtree_entry_preview_close", function(event_obj) {
         jQuery('#dtree_entry_preview_inner').fadeOut(400);
@@ -836,7 +861,18 @@ jQuery(document).ready(function($) {
         return DTree_field_set.validateForm(true);
         
     });
-    
+	// be sure we catch regular form submits as well as clicks
+	jQuery("#post").submit(function(event_obj) {
+		var gotErrors = DTree_field_set.validateForm(true);
+		if (!gotErrors ){
+			DTree_object = DTree_field_set.getDTObjectFromForm();
+			jQuery("#dtree_blob").val(JSON.stringify(DTree_object));
+			return true;
+		} else {
+			DTree_field_set.validateForm(true);
+			return false;
+		}
+	});
     jQuery( document ).on("click", "#dt_preview_button", function(event_obj) {
         DTree_field_set.previewTreeFromForm();
         event_obj.preventDefault();
