@@ -3,7 +3,7 @@
 Plugin Name: Decision Tree
 Plugin URI: http://sidecar.tv/decision_tree
 Description: A Decision Tree Builder
-Version: 1.0.3
+Version: 1.0.4
 Author: SideCar Apps
 Author URI: http://sidecar.tv/
 License: Commerical
@@ -26,7 +26,7 @@ class DecisionTree {
             $menu_icon = "";
         }
         
-        register_post_type( 'decision_tree',
+        register_post_type( sidecar_app_config::$post_type,
                 array(
                     'labels' => array(
                                 'menu_name' => 'Trees',
@@ -87,7 +87,7 @@ class DecisionTree {
      */
     static function add_metabox(){
         add_meta_box('decision_tree_metabox', 'Tree Box', array('DecisionTree', 'print_metabox_form'), 
-                    'decision_tree', 'normal');
+                    sidecar_app_config::$post_type, 'normal');
     }
 
     /**
@@ -183,7 +183,7 @@ class DecisionTree {
      * returns a list of the decision trees via ajax
      */
     static function list_trees() {
-        $args = array( 'post_type' => 'decision_tree', 'orderby'=> 'title', 'posts_per_page'=>-1);
+        $args = array( 'post_type' => sidecar_app_config::$post_type, 'orderby'=> 'title', 'posts_per_page'=>-1);
         $myposts = get_posts( $args );
         foreach($myposts as $post){
             $option_list[$post->ID]=$post->post_title;
@@ -202,18 +202,30 @@ class DecisionTree {
             array('jquery', 'jquery-ui-core'));
     }
 
+    /**
+     * Loads scripts into the admin head
+     */
+    static function load_admin_scripts_head(){
+        //this script should only load on the DT edit/add page so make sure that is where we are
+        $screen_obj = get_current_screen();
+        if($screen_obj->id ==sidecar_app_config::$post_type && $screen_obj->post_type ==sidecar_app_config::$post_type){
+            wp_enqueue_script('decision_tree_admin_js', 
+                plugins_url( '/decision_tree_admin.js' , __FILE__ ), 
+                array('jquery', 'jquery-ui-core', 'jquery-ui-dialog'));
+        }
+    }
+    
+    
     /*
      * Load scripts required for the admin facing side
      */
     static function load_admin_scripts(){
+        
         wp_enqueue_script('decision_tree_js', 
             plugins_url( '/decision_tree.js' , __FILE__ ), 
-            array('jquery', 'jquery-ui-core'));
+            array('jquery', 'jquery-ui-core', 'jquery-ui-dialog'));
         wp_enqueue_script('decision_tree_insert_tag_js', 
             plugins_url( '/decision_tree_insert_tag.js' , __FILE__ ), 
-            array('jquery', 'jquery-ui-core'));
-        wp_enqueue_script('decision_tree_admin_js', 
-            plugins_url( '/decision_tree_admin.js' , __FILE__ ), 
             array('jquery', 'jquery-ui-core', 'jquery-ui-dialog'));
         wp_enqueue_style( 'decision_tree_admin_style', 
             plugins_url( 'decision_tree_admin.css' , __FILE__ ) , false ); 
@@ -442,9 +454,9 @@ class DecisionTree {
       */
      static function admin_page_notice(){
         $screen = get_current_screen();
-        if( 'decision_tree' == $screen->post_type
+        if( sidecar_app_config::$post_type== $screen->post_type
             && 'edit' == $screen->base ){
-                $post_count = wp_count_posts('decision_tree');
+                $post_count = wp_count_posts(sidecar_app_config::$post_type);
                 sidecar_track::track_event('list_tree', 'count', 'published', $post_count->publish);
         }
      }
@@ -458,6 +470,10 @@ add_action('init', array('DecisionTree', 'create_post_type'));
 add_shortcode( 'decisiontree',  array('DecisionTree', 'decision_tree_shortcode'));
 add_action( 'wp_enqueue_scripts', array('DecisionTree', 'load_styles') );
 add_action( 'admin_init', array('DecisionTree', 'load_admin_scripts') );
+
+add_action( 'admin_head', array('DecisionTree', 'load_admin_scripts_head') );
+
+
 add_action( 'save_post', array('DecisionTree', 'save_metabox') );
 add_filter( 'mce_external_plugins', array('DecisionTree', 'add_buttons') );
 add_filter( 'mce_buttons', array('DecisionTree', 'register_buttons') );
