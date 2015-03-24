@@ -3,8 +3,8 @@ Contributors: sidecar
 Donate link: http://sidecar.tv/decision_tree/
 Tags: decision tree
 Requires at least: 3.0
-Tested up to: 3.9.2
-Stable tag: 1.0.3
+Tested up to: 4.1.1
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,9 @@ ignore this button for answer steps and we'll fix it soon!
 4. And they'll know when they've reached their answer 
 
 == Changelog ==
+
+= 1.0.4 =
+* Fixed a bug warning of unsaved changes when DT was active
 
 = 1.0.3 =
 * Fix DT loss when you hit return

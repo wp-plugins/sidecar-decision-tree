@@ -6,6 +6,7 @@ class sidecar_app_config{
     static $version =  1.0;
     static $tid = 'UA-46299157-3';
     static $appname = 'DecisionTree';
+    static $post_type = 'decision_tree';
 }
 
 ?>
